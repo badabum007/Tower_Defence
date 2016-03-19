@@ -1,5 +1,5 @@
 package application;
-
+//asd
 public class Bot {
 	int[] CoordX;
 	int[] CoordY;
