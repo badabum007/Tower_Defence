@@ -1,5 +1,5 @@
 package application;
-
+//
 public class LevelData { // Класс, содержащий информацию о карте
 	static String[] Level1 = new String[]{ 
 			"TTTTTTTTDTTDTTTTTTTT",
