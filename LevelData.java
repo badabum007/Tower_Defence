@@ -1,7 +1,11 @@
 package application;
-//
-public class LevelData { // Класс, содержащий информацию о карте
-	static String[] Level1 = new String[]{ 
+
+/**
+ * Класс содержит карты различных уровней
+ * @author pixxx
+ */
+public class LevelData { 
+	static String[] Level1 = new String[]{
 			"TTTTTTTTDTTDTTTTTTTT",
 			"T0000000D00D0000000T",
 			"T00DLLLLL00RRRRRD00T",

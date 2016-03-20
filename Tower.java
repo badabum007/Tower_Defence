@@ -1,5 +1,5 @@
 package application;
-//
+
 import java.util.ArrayList;
 
 import com.sun.prism.paint.Color;
@@ -11,20 +11,35 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
+/**
+ * Класс, описывающий вышку
+ * @author pixxx
+ */
 public class Tower extends Pane {
 	int Damage;
 	ImageView imageView;
+	
+	/** Cooldown на выстрел вышки */
 	double ShootCooldown;
+	
+	/** Сколько времени осталось до выстрела */
 	double TimeToShoot = 0;
+	
+	/** Позиция вышки, радиус атаки, ее размеры и производимый выстрел */
 	double posX;
 	double posY;
 	double attackRange;
 	int height;
 	int width;
-	ArrayList<Shot> Shots;
+	Shot Shots;
 	
+	/**
+	 * Метод, создающий объект вышки с заданными параметрами
+	 * @param posX - Местоположение по X
+	 * @param posY - Местоположение по Y
+	 * @param attackRange - Радиус атаки
+	 */
 	public Tower(double posX, double posY, double attackRange){
-		Shots = new ArrayList<Shot>();
 		width = Main.BLOCK_SIZE;
 		height = Main.BLOCK_SIZE;
 		ShootCooldown = 0.5;
@@ -37,11 +52,13 @@ public class Tower extends Pane {
 		this.setTranslateY(posY);
 		getChildren().add(imageView);
 		Main.gameRoot.getChildren().add(this);
-		
-		Circle AttackRangeCircle = new Circle(posX + Main.BLOCK_SIZE/2, posY + Main.BLOCK_SIZE/2, attackRange);
+		// Создание кольца, отображающего радиус атаки
+		Circle AttackRangeCircle = new Circle(posX + Main.BLOCK_SIZE/2, 
+													posY + Main.BLOCK_SIZE/2, attackRange);
 		AttackRangeCircle.setOpacity(0.1);
 		Main.gameRoot.getChildren().add(AttackRangeCircle);
 		AttackRangeCircle.setVisible(false);
+		// Отображение кольца радиуса атаки при наведении на вышку
 		this.setOnMouseEntered(event->{
 			AttackRangeCircle.setVisible(true);
 		});

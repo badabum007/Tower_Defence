@@ -1,5 +1,5 @@
 package application;
-//
+
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
@@ -7,6 +7,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+/**
+ * Класс, реализующий спрайтовую анимацию
+ * @author pixxx
+ */
 public class SpriteAnimation extends Transition{
 	private ImageView imageView;
 	private int count;
@@ -16,6 +20,17 @@ public class SpriteAnimation extends Transition{
 	private int width;
 	private int height;
 	
+	/**
+	 * Создает анимацию с параметрами
+	 * @param imageView - Изображение
+	 * @param duration - Продолжительность
+	 * @param count
+	 * @param columns
+	 * @param offsetX
+	 * @param offsetY
+	 * @param width - Ширина монстра
+	 * @param height - Высота монстра
+	 */
 	public SpriteAnimation(
 			ImageView imageView,
 			Duration duration,
@@ -39,9 +54,11 @@ public class SpriteAnimation extends Transition{
 	public void setOffsetX(int x){
 		this.offsetX = x;
 	}
+	
 	public void setOffsetY(int y){
 		this.offsetY = y;
 	}
+	
 	protected void interpolate(double f){
 		int index = Math.min((int)Math.floor(count*f), count - 1);
 		int x = (index%columns)*width + offsetX;

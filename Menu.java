@@ -1,5 +1,5 @@
 package application;
-//
+
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -8,24 +8,37 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * Класс, описывающий главное меню игры
+ * @author pixxx
+ */
 class Menu extends StackPane{
+	/** Музыка в меню */
 	MusicContainer MenuSound;
 	
+	/**
+	 * Метод добавляющий музыку в меню
+	 * @param path - Путь к аудиофайлу
+	 */
 	public Menu(String path){
-		MenuSound = new MusicContainer(path); // Маестро, музыку
+		MenuSound = new MusicContainer(path); 
 		getChildren().add(MenuSound.mediaView);
 	}
 	
-	public void ShowMenu(){ // Создание меню
+	/**
+	 * Метод создает меню и отвечает за его отображение
+	 */
+	public void ShowMenu(){
 		MenuSound.mediaPlayer.play();
 		MenuBox menuBox;
-		MenuItem ButtonStart = new MenuItem("New Game"); // Пункты меню
-		MenuItem ButtonAuto = new MenuItem("AutoGame");
+		/** Создание пунктов меню и их добавление в Root */
+		MenuItem ButtonStart = new MenuItem("New Game");
+		MenuItem ButtonAuto = new MenuItem("Auto Game");
 		MenuItem ButtonQuit = new MenuItem("Quit");
 		menuBox = new MenuBox("TowerDefence", ButtonStart, ButtonAuto, ButtonQuit);
 		getChildren().add(menuBox);
-		
-		ButtonStart.setOnMouseClicked(event ->{ // Начало игры
+		/** Обработчик кнопки "New Game" */
+		ButtonStart.setOnMouseClicked(event ->{
 			ButtonStart.setDisable(true);
 			ButtonAuto.setDisable(true);
 			menuBox.ChangeText("Pause (Press ESC to continue)");
@@ -35,7 +48,8 @@ class Menu extends StackPane{
 			Main.gameRoot.setVisible(true);
 			Main.gameRoot.StartGame();
 		});
-		ButtonAuto.setOnMouseClicked(event->{ // Автоматический режим
+		/** Обработчик кнопки "Auto Game" */
+		ButtonAuto.setOnMouseClicked(event->{
 			ButtonAuto.setDisable(true);
 			ButtonStart.setDisable(true);
 			menuBox.ChangeText("Pause (Press ESC to continue)");
@@ -45,25 +59,27 @@ class Menu extends StackPane{
 			Main.gameRoot.setVisible(true);
 			Main.gameRoot.StartGame();
 		});
-		ButtonQuit.setOnMouseClicked(event -> System.exit(0)); // Выход
+		/** Обработчик кнопки "Quit" */
+		ButtonQuit.setOnMouseClicked(event -> System.exit(0));
 	}
 }
 
+/**
+ * Класс, описывающий контейнер для кнопок меню
+ * @author pixxx
+ */
 class MenuBox extends StackPane{
 	Text text;
 	public MenuBox(String title, MenuItem... items){
 		Rectangle bg = new Rectangle(Main.RESOLUTION_X, Main.RESOLUTION_Y);
 		bg.setOpacity(0.7);
-		
 		text = new Text(title);
 		text.setFont(new Font(40));
 		text.setFill(Color.WHITE);
-		
 		VBox vbox = new VBox();
 		vbox.setAlignment(Pos.CENTER);
 		vbox.getChildren().addAll(text);
 		vbox.getChildren().addAll(items);
-		
 		setAlignment(Pos.CENTER);
 		getChildren().addAll(bg, vbox);
 	}
@@ -73,28 +89,32 @@ class MenuBox extends StackPane{
 	}
 }
 
+/**
+ * Класс, описывающий кнопки меню
+ * @author pixxx
+ */
 class MenuItem extends StackPane{
 	public MenuItem(String name){
 		Rectangle bg = new Rectangle(300,24);	
 		bg.setVisible(false);
 		bg.setOpacity(0.6);
-		
 		Text text = new Text(name);
 		text.setFill(Color.LIGHTGREY);
 		text.setFont(Font.font(20));
-		
 		setAlignment(Pos.CENTER);
 		getChildren().addAll(bg, text);
-		
-		this.setOnMouseEntered(event ->{ //Наведено
+		/** Поведение кнопки при наведении на нее */
+		this.setOnMouseEntered(event ->{ 
 			bg.setVisible(true);
 			text.setFill(Color.LIGHTGRAY);
 		});
-		this.setOnMouseExited(event ->{ //Снятие наведения
+		/** Поведение кнопки при снятии наведения */
+		this.setOnMouseExited(event ->{
 			bg.setVisible(false);
 			text.setFill(Color.LIGHTGRAY);
 		});
-		this.setOnMousePressed(event ->{ // Нажатие
+		/** Поведение кнопки при нажатии */
+		this.setOnMousePressed(event ->{
 			bg.setFill(Color.WHITE);
 			text.setFill(Color.BLACK);
 		});
