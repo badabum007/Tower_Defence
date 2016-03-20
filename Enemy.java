@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 /**
- * Класс описывает монстра и его движение и отвечает за его отображение
+ * Класс  описывает монстра и его движение и отвечает за его отображение
  * @author pixxx
  */
 public class Enemy extends Pane{

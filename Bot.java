@@ -2,7 +2,7 @@ package application;
 
 
 /**
- * Класс, реализующий бота
+ * Класс,  реализующий бота
  * @author pixxx
  */
 public class Bot {

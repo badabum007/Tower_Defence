@@ -9,7 +9,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
- * Класс, описывающий главное меню игры
+ * Класс,  описывающий главное меню игры
  * @author pixxx
  */
 class Menu extends StackPane{

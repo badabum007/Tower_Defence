@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 /**
- * Класс, реализующий спрайтовую анимацию
+ * Класс,  реализующий спрайтовую анимацию
  * @author pixxx
  */
 public class SpriteAnimation extends Transition{

@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 /**
- *  ласс, описывающий место по€влени€ монстров
+ *  ласс,  описывающий место по€влени€ монстров
  * @author pixxx
  */
 public class Spawner{

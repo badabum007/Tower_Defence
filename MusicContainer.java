@@ -7,7 +7,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
 /**
- * Класс для создания и хранения звуков и музыки
+ * Класс  для создания и хранения звуков и музыки
  * @author pixxx
  */
 class MusicContainer{

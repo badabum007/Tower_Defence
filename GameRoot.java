@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 /**
- * Класс, описывающий движок игры
+ * Класс,  описывающий движок игры
  * @author pixxx
  */
 public class GameRoot extends Pane {

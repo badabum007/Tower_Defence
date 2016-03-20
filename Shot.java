@@ -11,7 +11,7 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 /**
- * Класс, описывающий выстрел вышки
+ * Класс,  описывающий выстрел вышки
  * @author pixxx
  */
 public class Shot extends Circle {

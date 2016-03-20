@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
 /**
- * Класс, описывающий вышку
+ * Класс,  описывающий вышку
  * @author pixxx
  */
 public class Tower extends Pane {

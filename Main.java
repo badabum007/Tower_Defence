@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
- * Класс содержит основную информацию, сцену, Root-ы
+ * Класс  содержит основную информацию, сцену, Root-ы
  * @author pixxx
  * @version 1.0 Alpha
  */

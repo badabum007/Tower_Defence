@@ -1,7 +1,7 @@
 package application;
 
 /**
- * Класс содержит карты различных уровней
+ * Класс  содержит карты различных уровней
  * @author pixxx
  */
 public class LevelData { 
