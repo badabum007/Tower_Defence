@@ -19,7 +19,7 @@ class MusicContainer{
 	 * @param path - Путь к аудиофайлу
 	 */
 	public MusicContainer(String path){
-		Media media = new Media(new File(path).toURI().toString());
+		Media media = new Media(getClass().getResource(path).toString());
 		this.mediaPlayer = new MediaPlayer(media);
 		this.mediaView = new MediaView(mediaPlayer);
 		this.mediaPlayer.setAutoPlay(false);

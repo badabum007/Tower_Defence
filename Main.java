@@ -27,8 +27,8 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage){
-		menu = new Menu("res/menu.mp3");
-		gameRoot = new GameRoot("res/wave1.mp3");
+		menu = new Menu("menu.mp3");
+		gameRoot = new GameRoot("wave1.mp3");
 		scene = new Scene(All, RESOLUTION_X, RESOLUTION_Y);
 		All.getChildren().addAll(menu, gameRoot);
 		menu.ShowMenu();

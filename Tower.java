@@ -45,7 +45,7 @@ public class Tower extends Pane {
 		ShootCooldown = 0.5;
 		this.attackRange = attackRange;
 		this.posX = posX; this.posY = posY;
-		Image img = new Image("file:res/tower.png", width, height, false, true);
+		Image img = new Image(getClass().getResourceAsStream("Tower.png"), width, height, false, true);
 		this.imageView = new ImageView(img);
 		this.imageView.setViewport(new Rectangle2D(0, 0, width, height));
 		this.setTranslateX(posX);

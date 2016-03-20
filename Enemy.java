@@ -35,7 +35,7 @@ public class Enemy extends Pane{
 	 * @param columns - Параметр для спрайтовой анимации
 	 */
 	public Enemy(int posX, int posY, int count, int columns){
-		Image img = new Image("file:res/enemy.png");
+		Image img = new Image(getClass().getResourceAsStream("enemy.png"));
 		this.imageView = new ImageView(img);
 		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
 		animation = new SpriteAnimation

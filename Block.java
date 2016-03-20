@@ -3,7 +3,6 @@ package application;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 /**
@@ -15,13 +14,13 @@ public class Block extends Pane{
 	ImageView block;
 	
 	/** Текстура травы */
-	Image img_grass = new Image("file:res/grass.jpg");
+	Image img_grass = new Image(getClass().getResourceAsStream("grass.jpg"));
 	
 	/** Текстура дерева */
-	Image img_tree = new Image("file:res/tree.png"); 
+	Image img_tree = new Image(getClass().getResourceAsStream("tree.png")); 
 	
 	/** Текстура дороги */
-	Image img_road = new Image("file:res/road.jpg");
+	Image img_road = new Image(getClass().getResourceAsStream("road.jpg"));
 	
 	public enum BlockType{
 		Grass, Tree, Road;
