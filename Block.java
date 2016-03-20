@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
 /**
- *  ласс описывает блок размером Main.BLOCK_SIZE
+ * ы ласс описывает блок размером Main.BLOCK_SIZE
  * и отвечает за его отображение
  * @author pixxx
  */
