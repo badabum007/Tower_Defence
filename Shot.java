@@ -11,7 +11,7 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 /**
- * Класс,  описывающий выстрел вышки
+ * Класс, описывающий выстрел вышки
  * @author pixxx
  */
 public class Shot extends Circle {
@@ -43,14 +43,15 @@ public class Shot extends Circle {
 		// Задание пути выстрела - откуда и куда; Задание его анимации
 		ShotPath = new Path(new MoveTo(startX, startY));
 		ShotPath.getElements().add(new LineTo(Target.posX + Target.width/2, 
-															Target.posY + Target.height/2));
+				Target.posY + Target.height/2));
 		animation = new PathTransition(Duration.millis(200), ShotPath, this);
 		animation.play();
 		// При попадании в цель
 		animation.setOnFinished(new EventHandler<ActionEvent>(){
 			 @Override
              public void handle(ActionEvent actionEvent) {
-				 PathTransition finishedAnimation = (PathTransition) actionEvent.getSource();
+				 PathTransition finishedAnimation = 
+						 (PathTransition) actionEvent.getSource();
 				 Shot finishedShot = (Shot) finishedAnimation.getNode();
 				 // Удаление выстрела из Root-а и получение целью урона
 				 finishedShot.setVisible(false);

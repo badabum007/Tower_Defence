@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 /**
- *  ласс,  описывающий место по€влени€ монстров
+ *  ласс, описывающий место по€влени€ монстров
  * @author pixxx
  */
 public class Spawner{
@@ -59,23 +59,27 @@ public class Spawner{
 				String line = LevelData.levels[0][BlockY];
 				BlockCenterX = enemies.get(j).posX + enemies.get(j).width/2; 
 				BlockCenterY = enemies.get(j).posY + enemies.get(j).height/2;
-				if ((enemies.get(j).PrevBlock=='U')&&
-						(BlockCenterY>BlockY * Main.BLOCK_SIZE + Main.BLOCK_SIZE / 2)){
+				if ((enemies.get(j).PrevBlock=='U')
+						&&(BlockCenterY>BlockY * Main.BLOCK_SIZE +
+					Main.BLOCK_SIZE / 2)){
 					enemies.get(j).moveY(-1);
 					continue;
 				}
-				if ((enemies.get(j).PrevBlock=='D')&&
-						(BlockCenterY<BlockY * Main.BLOCK_SIZE + Main.BLOCK_SIZE / 2)){
+				if ((enemies.get(j).PrevBlock=='D')
+						&&(BlockCenterY<BlockY * Main.BLOCK_SIZE +
+						Main.BLOCK_SIZE / 2)){
 					enemies.get(j).moveY(1);
 					continue;
 				}
-				if ((enemies.get(j).PrevBlock=='R')&&
-						(BlockCenterX<BlockX * Main.BLOCK_SIZE + Main.BLOCK_SIZE / 2)){
+				if ((enemies.get(j).PrevBlock=='R')
+						&&(BlockCenterX<BlockX * Main.BLOCK_SIZE + 
+						Main.BLOCK_SIZE / 2)){
 					enemies.get(j).moveX(1);
 					continue;
 				}
-				if ((enemies.get(j).PrevBlock=='L')&&
-						(BlockCenterX>BlockX * Main.BLOCK_SIZE + Main.BLOCK_SIZE / 2)){
+				if ((enemies.get(j).PrevBlock=='L')
+						&&(BlockCenterX>BlockX * Main.BLOCK_SIZE + 
+						Main.BLOCK_SIZE / 2)){
 					enemies.get(j).moveX(-1);
 					continue;
 				}

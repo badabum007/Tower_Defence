@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
 /**
- * Класс,  описывающий вышку
+ * Класс, описывающий вышку
  * @author pixxx
  */
 public class Tower extends Pane {
@@ -45,7 +45,8 @@ public class Tower extends Pane {
 		ShootCooldown = 0.5;
 		this.attackRange = attackRange;
 		this.posX = posX; this.posY = posY;
-		Image img = new Image(getClass().getResourceAsStream("Tower.png"), width, height, false, true);
+		Image img = new Image(getClass().getResourceAsStream("Tower.png"),
+				width, height, false, true);
 		this.imageView = new ImageView(img);
 		this.imageView.setViewport(new Rectangle2D(0, 0, width, height));
 		this.setTranslateX(posX);
@@ -54,7 +55,7 @@ public class Tower extends Pane {
 		Main.gameRoot.getChildren().add(this);
 		// Создание кольца, отображающего радиус атаки
 		Circle AttackRangeCircle = new Circle(posX + Main.BLOCK_SIZE/2, 
-													posY + Main.BLOCK_SIZE/2, attackRange);
+				posY + Main.BLOCK_SIZE/2, attackRange);
 		AttackRangeCircle.setOpacity(0.1);
 		Main.gameRoot.getChildren().add(AttackRangeCircle);
 		AttackRangeCircle.setVisible(false);
