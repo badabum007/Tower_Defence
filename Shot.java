@@ -17,14 +17,14 @@ import javafx.util.Duration;
  */
 public class Shot extends Circle {
   /** Цель выстрела */
-  Enemy Target;
+  Enemy target;
 
   /** Стартовые координаты выстрела */
   double startX;
   double startY;
 
   /** Путь выстрела и его анимация */
-  Path ShotPath;
+  Path shotPath;
   PathTransition animation;
 
   /**
@@ -34,29 +34,29 @@ public class Shot extends Circle {
    * @param startX - Стартовая координата X
    * @param startY - Стартовая координата Y
    */
-  public Shot(Enemy Target, double startX, double startY) {
-    this.Target = Target;
+  public Shot(Enemy target, double startX, double startY) {
+    this.target = target;
     this.startX = startX;
     this.startY = startY;
     this.setCenterX(startX);
     this.setCenterY(startY);
     this.setRadius(5);
     Main.gameRoot.getChildren().add(this);
-    // Задание пути выстрела - откуда и куда; Задание его анимации
-    ShotPath = new Path(new MoveTo(startX, startY));
-    ShotPath.getElements()
-        .add(new LineTo(Target.posX + Target.width / 2, Target.posY + Target.height / 2));
-    animation = new PathTransition(Duration.millis(200), ShotPath, this);
+    /** Задание пути выстрела - откуда и куда; Задание его анимации */
+    shotPath = new Path(new MoveTo(startX, startY));
+    shotPath.getElements()
+        .add(new LineTo(target.posX + target.width / 2, target.posY + target.height / 2));
+    animation = new PathTransition(Duration.millis(200), shotPath, this);
     animation.play();
-    // При попадании в цель
+    /** При попадании в цель */
     animation.setOnFinished(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent actionEvent) {
         PathTransition finishedAnimation = (PathTransition) actionEvent.getSource();
         Shot finishedShot = (Shot) finishedAnimation.getNode();
-        // Удаление выстрела из Root-а и получение целью урона
+        /** Удаление выстрела из Root-а и получение целью урона */
         finishedShot.setVisible(false);
-        Target.GetDamage(20);
+        target.getDamage(20);
         Main.gameRoot.getChildren().remove(finishedShot);
       }
     });

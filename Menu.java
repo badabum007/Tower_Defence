@@ -21,8 +21,8 @@ import javafx.scene.text.Text;
  */
 class Menu extends StackPane {
   /** Музыка в меню */
-  MusicContainer MenuSound;
-  
+  MusicContainer menuSound;
+
   /** Список файлов для загрузки */
   ListView<String> listView;
 
@@ -32,57 +32,58 @@ class Menu extends StackPane {
    * @param path - Путь к аудиофайлу
    */
   public Menu(String path) {
-    MenuSound = new MusicContainer(path);
-    getChildren().add(MenuSound.mediaView);
+    menuSound = new MusicContainer(path);
+    getChildren().add(menuSound.mediaView);
   }
 
   /**
    * Метод создает меню и отвечает за его отображение
    */
-  public void ShowMenu() {
-    MenuSound.mediaPlayer.play();
+  public void showMenu() {
+    menuSound.mediaPlayer.play();
     MenuBox menuBox;
     /** Создание пунктов меню и их добавление в Root */
     VBox vbox = new VBox(10);
-    MenuItem ButtonStart = new MenuItem("New Game");
-    MenuItem ButtonAuto = new MenuItem("Auto Game");
-    MenuItem ButtonSaveGame = new MenuItem("Save");
-    MenuItem ButtonLoadGame = new MenuItem("Load");
-    MenuItem ButtonLoad = new MenuItem("Load");
-    MenuItem ButtonJavaSort = new MenuItem("JavaSort");
-    MenuItem ButtonScalaSort = new MenuItem("ScalaSort");
-    MenuItem ButtonBack = new MenuItem("Back");
-    ButtonSaveGame.setDisable(true);
-    MenuItem ButtonQuit = new MenuItem("Quit");
-    menuBox = new MenuBox("TowerDefence", ButtonStart, ButtonAuto, ButtonLoadGame, ButtonSaveGame, ButtonQuit);
+    MenuItem buttonStart = new MenuItem("New Game");
+    MenuItem buttonAuto = new MenuItem("Auto Game");
+    MenuItem buttonSaveGame = new MenuItem("Save");
+    MenuItem buttonLoadGame = new MenuItem("Load");
+    MenuItem buttonLoad = new MenuItem("Load");
+    MenuItem buttonJavaSort = new MenuItem("JavaSort");
+    MenuItem buttonScalaSort = new MenuItem("ScalaSort");
+    MenuItem buttonBack = new MenuItem("Back");
+    buttonSaveGame.setDisable(true);
+    MenuItem buttonQuit = new MenuItem("Quit");
+    menuBox = new MenuBox("TowerDefence", buttonStart, buttonAuto, buttonLoadGame, buttonSaveGame,
+        buttonQuit);
     getChildren().add(menuBox);
     /** Обработчик кнопки "New Game" */
-    ButtonStart.setOnMouseClicked(event -> {
-      ButtonSaveGame.setDisable(false);
-      menuBox.ChangeText("Pause (Press ESC to continue)");
-      Main.gameRoot.GameSound.mediaPlayer.stop();
-      MenuSound.mediaPlayer.pause();
+    buttonStart.setOnMouseClicked(event -> {
+      buttonSaveGame.setDisable(false);
+      menuBox.changeText("Pause (Press ESC to continue)");
+      Main.gameRoot.gameSound.mediaPlayer.stop();
+      menuSound.mediaPlayer.pause();
       setVisible(false);
-      Main.gameRoot.GameMode = "Normal";
+      Main.gameRoot.gameMode = "Normal";
       Main.gameRoot.setVisible(true);
-      Main.gameRoot.StartGame();
+      Main.gameRoot.startGame();
     });
     /** Обработчик кнопки "Auto Game" */
-    ButtonAuto.setOnMouseClicked(event -> {
-      ButtonSaveGame.setDisable(false);
-      menuBox.ChangeText("Pause (Press ESC to continue)");
-      Main.gameRoot.GameSound.mediaPlayer.stop();
-      MenuSound.mediaPlayer.pause();
+    buttonAuto.setOnMouseClicked(event -> {
+      buttonSaveGame.setDisable(false);
+      menuBox.changeText("Pause (Press ESC to continue)");
+      Main.gameRoot.gameSound.mediaPlayer.stop();
+      menuSound.mediaPlayer.pause();
       setVisible(false);
-      Main.gameRoot.GameMode = "Auto";
+      Main.gameRoot.gameMode = "Auto";
       Main.gameRoot.setVisible(true);
-      Main.gameRoot.StartGame();
+      Main.gameRoot.startGame();
     });
     /** Обработчик кнопки "Load" */
-    ButtonLoadGame.setOnMouseClicked(event -> {
+    buttonLoadGame.setOnMouseClicked(event -> {
       listView = new ListView<>();
-      File[] saveFiles = Main.fileWork.GetSaveList();
-      for (int i = 0; i<saveFiles.length; i++){
+      File[] saveFiles = Main.fileWork.getSaveList();
+      for (int i = 0; i < saveFiles.length; i++) {
         listView.getItems().add(saveFiles[i].getName());
       }
       listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -92,72 +93,72 @@ class Menu extends StackPane {
       vbox.setAlignment(Pos.CENTER);
       vbox.getChildren().addAll(text);
       vbox.getChildren().addAll(listView);
-      vbox.getChildren().addAll(ButtonLoad, ButtonJavaSort, ButtonScalaSort, ButtonBack);
+      vbox.getChildren().addAll(buttonLoad, buttonJavaSort, buttonScalaSort, buttonBack);
       setAlignment(Pos.CENTER);
       getChildren().addAll(vbox);
     });
     /** Обработчик "Back" в подменю "Load" */
-    ButtonBack.setOnMouseClicked(event -> {
+    buttonBack.setOnMouseClicked(event -> {
       vbox.getChildren().clear();
       getChildren().remove(vbox);
     });
     /** Обработчик "Load" в подменю "Load" */
-    ButtonLoad.setOnMouseClicked(event ->{
+    buttonLoad.setOnMouseClicked(event -> {
       String choise;
       choise = listView.getSelectionModel().getSelectedItem();
-      if (choise != null){
-        ButtonSaveGame.setDisable(true);
-        Main.gameRoot.GameMode = "RePlay";
+      if (choise != null) {
+        buttonSaveGame.setDisable(true);
+        Main.gameRoot.gameMode = "RePlay";
         vbox.getChildren().clear();
         getChildren().remove(vbox);
-        Main.fileWork.LoadFile = choise;
-        MenuSound.mediaPlayer.pause();
-        Main.gameRoot.GameSound.mediaPlayer.stop();
+        Main.fileWork.loadFile = choise;
+        menuSound.mediaPlayer.pause();
+        Main.gameRoot.gameSound.mediaPlayer.stop();
         setVisible(false);
-        if (Main.gameRoot.GameMode != "Auto")
-          Main.gameRoot.GameMode = "RePlay";
+        if (Main.gameRoot.gameMode != "Auto")
+          Main.gameRoot.gameMode = "RePlay";
         Main.gameRoot.setVisible(true);
-        Main.gameRoot.StartGame();
+        Main.gameRoot.startGame();
       }
     });
     /** Обработчик "JavaSort" в подменю "Load" */
-    ButtonJavaSort.setOnMouseClicked(event ->{
+    buttonJavaSort.setOnMouseClicked(event -> {
       long timeJava = System.currentTimeMillis();
       listView.getItems().clear();
-      File[] sortedFiles = Main.fileWork.GetSortedJavaList();
-      for (int i = 0; i<10000; i++){
-        sortedFiles = Main.fileWork.GetSortedJavaList();
+      File[] sortedFiles = Main.fileWork.getSortedJavaList();
+      for (int i = 0; i < 10000; i++) {
+        sortedFiles = Main.fileWork.getSortedJavaList();
       }
-      for (int i = 0; i<sortedFiles.length; i++){
+      for (int i = 0; i < sortedFiles.length; i++) {
         listView.getItems().add(sortedFiles[i].getName());
       }
       timeJava = System.currentTimeMillis() - timeJava;
       System.out.println("Java: " + timeJava);
     });
     /** Обработчик "ScalaSort" в подменб "Load" */
-    ButtonScalaSort.setOnMouseClicked(event ->{
+    buttonScalaSort.setOnMouseClicked(event -> {
       long timeScala = System.currentTimeMillis();
       listView.getItems().clear();
-      File[] sortedFiles = Main.fileWork.GetSortedScalaList();
-      for (int i = 0; i<10000; i++){
-        sortedFiles = Main.fileWork.GetSortedScalaList();
+      File[] sortedFiles = Main.fileWork.getSortedScalaList();
+      for (int i = 0; i < 10000; i++) {
+        sortedFiles = Main.fileWork.getSortedScalaList();
       }
-      for (int i = 0; i<sortedFiles.length; i++){
+      for (int i = 0; i < sortedFiles.length; i++) {
         listView.getItems().add(sortedFiles[i].getName());
       }
       timeScala = System.currentTimeMillis() - timeScala;
       System.out.println("Scala: " + timeScala);
     });
     /** Обработчик кнопки "Save" */
-    ButtonSaveGame.setOnMouseClicked(event ->{
+    buttonSaveGame.setOnMouseClicked(event -> {
       try {
-        Main.fileWork.CreateSave();
+        Main.fileWork.createSave();
       } catch (Exception e) {
         e.printStackTrace();
       }
     });
     /** Обработчик кнопки "Quit" */
-    ButtonQuit.setOnMouseClicked(event -> {
+    buttonQuit.setOnMouseClicked(event -> {
       System.exit(0);
     });
   }
@@ -186,7 +187,7 @@ class MenuBox extends StackPane {
     getChildren().addAll(bg, vbox);
   }
 
-  public void ChangeText(String title) {
+  public void changeText(String title) {
     text.setText(title);
   }
 }

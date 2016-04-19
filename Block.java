@@ -61,15 +61,16 @@ public class Block extends Pane {
           Main.gameRoot.getChildren().removeAll(line1, line2, line3, line4);
         });
         /** Ставить Tower по клику на блок */
-        if (Main.gameRoot.GameMode == "Normal") {
+        if (Main.gameRoot.gameMode == "Normal") {
           this.setOnMouseClicked(event -> {
-            if (Main.connectionType == "Server"){
-                System.out.println(x + " " + y);
-                Main.server.sendCoordinates(x, y);
+            if (Main.connectionType == "Server") {
+              System.out.println(x + " " + y);
+              Main.server.sendCoordinates(x, y);
             }
-            Main.fileWork.AddToFile("positions.txt", x + " " + y + " " + Main.gameRoot.timeOfTower + "\n");
+            Main.fileWork.addToFile("positions.txt",
+                x + " " + y + " " + Main.gameRoot.timeOfTower + "\n");
             Tower tower = new Tower(x, y, 150);
-            Main.gameRoot.Towers.add(tower);
+            Main.gameRoot.towers.add(tower);
           });
         }
         break;

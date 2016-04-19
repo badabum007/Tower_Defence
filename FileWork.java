@@ -15,25 +15,25 @@ import application.QuickSort;
 
 public class FileWork {
   /** Временный файл для сохранения */
-  String LoadFile;
+  String loadFile;
 
-  public void CreateTempFile(String nameOfFile) {
-    File TempFile = new File(nameOfFile);
+  public void createTempFile(String nameOfFile) {
+    File tempFile = new File(nameOfFile);
     try {
-      FileWriter out = new FileWriter(TempFile.getAbsoluteFile());
+      FileWriter out = new FileWriter(tempFile.getAbsoluteFile());
       out.write("");
       out.close();
     } catch (IOException e1) {
       e1.printStackTrace();
     }
     try {
-      TempFile.createNewFile();
+      tempFile.createNewFile();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  public void AddToFile(String nameOfFile, String addingPart) {
+  public void addToFile(String nameOfFile, String addingPart) {
     File file = new File(nameOfFile);
     try {
       FileWriter out = new FileWriter(file.getAbsoluteFile(), true);
@@ -44,10 +44,10 @@ public class FileWork {
     }
   }
 
-  public void CreateSave() throws IOException {
+  public void createSave() throws IOException {
     String nameOfFile =
         new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + "_"
-            + Main.gameRoot.Towers.size() + ".save";
+            + Main.gameRoot.towers.size() + ".save";
     File file = new File(nameOfFile);
     try {
       file.createNewFile();
@@ -67,9 +67,9 @@ public class FileWork {
     }
   }
 
-  public File[] GetSaveList() {
-    File allFiles[];
-    File saveFiles[];
+  public File[] getSaveList() {
+    File[] allFiles;
+    File[] saveFiles;
     File filesPath = new java.io.File(new File(".").getAbsolutePath());
     allFiles = filesPath.listFiles();
     int j = 0;
@@ -91,64 +91,64 @@ public class FileWork {
     return saveFiles;
   }
 
-  public File[] GetSortedJavaList() {
-    File saveFiles[] = GetSaveList();
-    int countOfTowers[] = new int[saveFiles.length];
-    for (int i=0; i<saveFiles.length; i++){
-      countOfTowers[i] = GetAmountOfTowers(saveFiles[i].getName());
+  public File[] getSortedJavaList() {
+    File[] saveFiles = getSaveList();
+    int[] countOfTowers = new int[saveFiles.length];
+    for (int i = 0; i < saveFiles.length; i++) {
+      countOfTowers[i] = getAmountOfTowers(saveFiles[i].getName());
     }
     quickSort(countOfTowers, saveFiles, 0, countOfTowers.length - 1);
     return saveFiles;
   }
-  
-  public File[] GetSortedScalaList(){
-    File saveFiles[] = GetSaveList();
-    int countOfTowers[] = new int[saveFiles.length];
-    for (int i=0; i<saveFiles.length; i++){
-      countOfTowers[i] = GetAmountOfTowers(saveFiles[i].getName());
+
+  public File[] getSortedScalaList() {
+    File[] saveFiles = getSaveList();
+    int[] countOfTowers = new int[saveFiles.length];
+    for (int i = 0; i < saveFiles.length; i++) {
+      countOfTowers[i] = getAmountOfTowers(saveFiles[i].getName());
     }
     QuickSort qSortObject = new QuickSort();
     qSortObject.sort(countOfTowers, saveFiles);
     return saveFiles;
   }
 
-  private int GetAmountOfTowers(String nameOfFile) {
-    String mas[] = nameOfFile.split("_");
+  private int getAmountOfTowers(String nameOfFile) {
+    String[] mas = nameOfFile.split("_");
     mas[2] = mas[2].replace(".save", "");
     return (Integer.parseInt(mas[2]));
   }
-  
-  int Partition(int arr[], File files[], int left, int right)
-  {
-        int i = left, j = right;
-        int tmp;
-        File temp;
-        int pivot = arr[(left + right) / 2];
-       
-        while (i <= j) {
-              while (arr[i] < pivot)
-                    i++;
-              while (arr[j] > pivot)
-                    j--;
-              if (i <= j) {
-                    tmp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = tmp;
-                    temp = files[i];
-                    files[i] = files[j];
-                    files[j] = temp;
-                    i++;
-                    j--;
-              }
-        };
-        return i;
+
+  int partition(int arr[], File files[], int left, int right) {
+    int i = left, j = right;
+    int tmp;
+    File temp;
+    int pivot = arr[(left + right) / 2];
+    while (i <= j) {
+      while (arr[i] < pivot) {
+        i++;
+      }
+      while (arr[j] > pivot) {
+        j--;
+      }
+      if (i <= j) {
+        tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        temp = files[i];
+        files[i] = files[j];
+        files[j] = temp;
+        i++;
+        j--;
+      }
+    } ;
+    return i;
   }
-   
+
   void quickSort(int arr[], File files[], int left, int right) {
-        int index = Partition(arr, files, left, right);
-        if (left < index - 1)
-              quickSort(arr, files, left, index - 1);
-        if (index < right)
-              quickSort(arr, files, index, right);
+    int index = partition(arr, files, left, right);
+    if (left < index - 1)
+      quickSort(arr, files, left, index - 1);
+    if (index < right)
+      quickSort(arr, files, index, right);
   }
 }

@@ -20,7 +20,7 @@ public class Main extends Application {
   /** —цены и Root-ы */
   static GameRoot gameRoot;
   static Menu menu;
-  static Pane All = new Pane();
+  static Pane all = new Pane();
   static Scene scene;
   static FileWork fileWork;
 
@@ -46,9 +46,9 @@ public class Main extends Application {
     fileWork = new FileWork();
     menu = new Menu("menu.mp3");
     gameRoot = new GameRoot("wave1.mp3");
-    scene = new Scene(All, RESOLUTION_X, RESOLUTION_Y);
-    All.getChildren().addAll(menu, gameRoot);
-    menu.ShowMenu();
+    scene = new Scene(all, RESOLUTION_X, RESOLUTION_Y);
+    all.getChildren().addAll(menu, gameRoot);
+    menu.showMenu();
     primaryStage.setTitle(connectionType);
     primaryStage.setScene(scene);
     primaryStage.show();

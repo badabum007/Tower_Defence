@@ -23,16 +23,16 @@ import javafx.util.Duration;
  */
 public class GameRoot extends Pane {
   /** Маестро, музыку! */
-  MusicContainer GameSound;
+  MusicContainer gameSound;
 
   /** Имеющиеся на карте Спаунеры */
-  Spawner[] Spawn = new Spawner[2];
+  Spawner[] spawn = new Spawner[2];
 
   /** Вышки, добавленные на карту */
-  ArrayList<Tower> Towers;
+  ArrayList<Tower> towers;
 
   /** Режим игры: автоматический(Auto) или обычный(Normal) */
-  static String GameMode;
+  static String gameMode;
 
   /** Бот для автоматического режима */
   Bot bot;
@@ -56,40 +56,41 @@ public class GameRoot extends Pane {
    */
   public GameRoot(String path) {
     this.setVisible(false);
-    GameSound = new MusicContainer(path); // Маестро, музыку
-    GameSound.mediaPlayer.setVolume(0.4);
-    getChildren().add(GameSound.mediaView);
+    /** Включаем музыку */
+    gameSound = new MusicContainer(path);
+    gameSound.mediaPlayer.setVolume(0.4);
+    getChildren().add(gameSound.mediaView);
   }
 
   /**
    * Метод, реализующий логику игры
    */
-  public void StartGame() {
+  public void startGame() {
     timeOfTower = 0;
-    Towers = new ArrayList<Tower>();
-    CreateMap();
-    GameSound.mediaPlayer.play();
-    Spawn[0] = new Spawner(30, 8 * Main.BLOCK_SIZE + 9, 0);
-    Spawn[1] = new Spawner(30, 11 * Main.BLOCK_SIZE + 9, 0);
-    Main.fileWork.CreateTempFile("positions.txt");
+    towers = new ArrayList<Tower>();
+    createMap();
+    gameSound.mediaPlayer.play();
+    spawn[0] = new Spawner(30, 8 * Main.BLOCK_SIZE + 9, 0);
+    spawn[1] = new Spawner(30, 11 * Main.BLOCK_SIZE + 9, 0);
+    Main.fileWork.createTempFile("positions.txt");
 
-    if (GameMode == "Auto") {
+    if (gameMode == "Auto") {
       bot = new Bot();
     }
-    // Чтение аргументов из файла и их запись в массив
-    if (GameMode == "RePlay") {
+    /** Чтение аргументов из файла и их запись в массив */
+    if (gameMode == "RePlay") {
       int counter = 0;
       try {
         String[] args = new String[3];
-        BufferedReader reader = new BufferedReader(new FileReader(Main.fileWork.LoadFile));
+        BufferedReader reader = new BufferedReader(new FileReader(Main.fileWork.loadFile));
         String line;
         maxCount = 0;
-        // Считаем количество строк в файле для выделения памяти
-        while ((line = reader.readLine()) != null){
+        /** Считаем количество строк в файле для выделения памяти */
+        while ((line = reader.readLine()) != null) {
           maxCount++;
         }
         reader.close();
-        reader = new BufferedReader(new FileReader(Main.fileWork.LoadFile));
+        reader = new BufferedReader(new FileReader(Main.fileWork.loadFile));
         argumentsFromFile = new long[maxCount][3];
         while ((line = reader.readLine()) != null) {
           args = line.split(" ");
@@ -103,108 +104,108 @@ public class GameRoot extends Pane {
       }
     }
     /** Описание таймера */
-    final LongProperty CheckForShootTimer = new SimpleLongProperty();
-    final LongProperty FrameTimer = new SimpleLongProperty(0);
+    final LongProperty checkForShootTimer = new SimpleLongProperty();
+    final LongProperty frameTimer = new SimpleLongProperty(0);
     AnimationTimer timer = new AnimationTimer() {
-      long EveryTick = 0;
-      long EveryTickForBot = 0;
-      // Счетчик для аргументов из файла
+      long everyTick = 0;
+      long everyTickForBot = 0;
+      /** Счетчик для аргументов из файла */
       int counter = 0;
 
       @Override
       public void handle(long now) {
         timeOfTower++;
-        EveryTick++;
-        // 55 тиков ~= 1 сек
-        if (EveryTick > 55) {
-          EveryTick = 0;
-          if (Spawn[0].iterator < Spawn[0].count)
-            Spawn[0].CreateMonster();
-          if (Spawn[1].iterator < Spawn[1].count)
-            Spawn[1].CreateMonster();
+        everyTick++;
+        /** 55 тиков ~= 1 сек */
+        if (everyTick > 55) {
+          everyTick = 0;
+          if (spawn[0].iterator < spawn[0].count)
+            spawn[0].createMonster();
+          if (spawn[1].iterator < spawn[1].count)
+            spawn[1].createMonster();
         }
-        // Установка вышек в соответствии с временем постройки
-        if (GameMode == "RePlay") {
+        /** Установка вышек в соответствии с временем постройки */
+        if (gameMode == "RePlay") {
           if (counter < maxCount) {
             if (timeOfTower > argumentsFromFile[counter][2]) {
               Tower tower =
                   new Tower(argumentsFromFile[counter][0], argumentsFromFile[counter][1], 150);
-              Main.gameRoot.Towers.add(tower);
+              Main.gameRoot.towers.add(tower);
               counter++;
             }
           }
         }
-        if (GameMode == "Auto") {
-          EveryTickForBot++;
-          // 165 тиков ~= 3 сек
-          if (EveryTickForBot > 165) {
-            EveryTickForBot = 0;
-            if (bot.Iterator < bot.Count)
+        if (gameMode == "Auto") {
+          everyTickForBot++;
+          /** 165 тиков ~= 3 сек */
+          if (everyTickForBot > 165) {
+            everyTickForBot = 0;
+            if (bot.iterator < bot.count)
               bot.createTower();
           }
         }
-        // Проверка на выстрелы вышек с интервалом 0.1
-        if (now / 100000000 != CheckForShootTimer.get()) {
-          CheckForShooting();
+        /** Проверка на выстрелы вышек с интервалом 0.1 */
+        if (now / 100000000 != checkForShootTimer.get()) {
+          checkForShooting();
           if (Main.connectionType == "Client") {
             Main.client.recieve();
           }
           if (Main.connectionType == "Server") {
             Main.server.sendEmptyString();
           }
-          // Уменьшение Cooldown-а каждой вышки
-          for (int i = 0; i < Towers.size(); i++) {
-            Towers.get(i).TimeToShoot -= 0.1;
+          /** Уменьшение Cooldown-а каждой вышки */
+          for (int i = 0; i < towers.size(); i++) {
+            towers.get(i).timeToShoot -= 0.1;
           }
         }
-        // Обновление местоположения монстров с интервалом 0.01 сек
-        if (now / 10000000 != FrameTimer.get()) {
-          Thread t1 = new Thread(Spawn[0]);
-          Thread t2 = new Thread(Spawn[1]);
-          t1.start();
+        /** Обновление местоположения монстров с интервалом 0.01 сек */
+        if (now / 10000000 != frameTimer.get()) {
+          Thread thread_1 = new Thread(spawn[0]);
+          Thread thread_2 = new Thread(spawn[1]);
+          thread_1.start();
           try {
-            t1.join();
+            thread_1.join();
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
-          t2.start();
+          thread_2.start();
           try {
-            t2.join();
+            thread_2.join();
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
         }
-        FrameTimer.set(now / 10000000);
-        CheckForShootTimer.set(now / 100000000);
+        frameTimer.set(now / 10000000);
+        checkForShootTimer.set(now / 100000000);
       }
     };
     timer.start();
     // Описание анимации плавного появления и исчезновения главного меню
-    FadeTransition FT_Menu = new FadeTransition(Duration.seconds(1), Main.menu);
-    FT_Menu.setFromValue(0);
-    FT_Menu.setToValue(1);
-    FadeTransition FT_FromGame = new FadeTransition(Duration.seconds(0.5), this);
-    FT_FromGame.setFromValue(0);
-    FT_FromGame.setToValue(1);
-    // Обработчик нажатия ESC в процессе игры
+    FadeTransition ftMenu = new FadeTransition(Duration.seconds(1), Main.menu);
+    ftMenu.setFromValue(0);
+    ftMenu.setToValue(1);
+    FadeTransition ftFromGame = new FadeTransition(Duration.seconds(0.5), this);
+    ftFromGame.setFromValue(0);
+    ftFromGame.setToValue(1);
+    /** Обработчик нажатия ESC в процессе игры */
     Main.scene.setOnKeyPressed(event -> {
       if ((event.getCode() == KeyCode.ESCAPE) && (!Main.menu.isVisible())) {
         timer.stop();
-        this.GameSound.mediaPlayer.pause();
-        Main.menu.MenuSound.mediaPlayer.play();
-        FT_Menu.play();
+        this.gameSound.mediaPlayer.pause();
+        Main.menu.menuSound.mediaPlayer.play();
+        ftMenu.play();
         this.setVisible(false);
         Main.menu.setVisible(true);
       }
-      // Обработчик нажатия ESC в процессе игры
+      /** Обработчик нажатия ESC в процессе игры */
       else if ((event.getCode() == KeyCode.ESCAPE) && (Main.menu.isVisible())) {
-        // Затухание
+        /** Затухание */
         timer.start();
-        FT_FromGame.play();
+        ftFromGame.play();
         this.setVisible(true);
         Main.menu.setVisible(false);
-        this.GameSound.mediaPlayer.play();
-        Main.menu.MenuSound.mediaPlayer.pause();
+        this.gameSound.mediaPlayer.play();
+        Main.menu.menuSound.mediaPlayer.pause();
       }
     });
   }
@@ -214,7 +215,7 @@ public class GameRoot extends Pane {
    * 
    * @see LevelData
    */
-  public void CreateMap() {
+  public void createMap() {
     for (int i = 0; i < LevelData.levels[0].length; i++) {
       String line = LevelData.levels[0][i];
       for (int j = 0; j < line.length(); j++) {
@@ -235,29 +236,29 @@ public class GameRoot extends Pane {
   }
 
   /** Метод, реализующий поиск целей и генерации выстрела */
-  public void CheckForShooting() {
-    int SpawnersCount = 2;
-    for (int i = 0; i < SpawnersCount; i++) {
-      for (int j = 0; j < Spawn[i].enemies.size(); j++) {
-        if (Spawn[i].enemies.get(j).Health <= 0) {
-          Spawn[i].enemies.remove(j);
+  public void checkForShooting() {
+    int spawnersCount = 2;
+    for (int i = 0; i < spawnersCount; i++) {
+      for (int j = 0; j < spawn[i].enemies.size(); j++) {
+        if (spawn[i].enemies.get(j).health <= 0) {
+          spawn[i].enemies.remove(j);
           continue;
         }
-        for (int k = 0; k < Towers.size(); k++) {
-          double EnemyPosX = Spawn[i].enemies.get(j).getTranslateX();
-          double EnemyPosY = Spawn[i].enemies.get(j).getTranslateY();
-          double TowerPosX = Towers.get(k).getTranslateX();
-          double TowerPosY = Towers.get(k).getTranslateY();
-          // Условие проверки на Cooldown
-          if (Towers.get(k).TimeToShoot <= 0) {
+        for (int k = 0; k < towers.size(); k++) {
+          double EnemyPosX = spawn[i].enemies.get(j).getTranslateX();
+          double EnemyPosY = spawn[i].enemies.get(j).getTranslateY();
+          double TowerPosX = towers.get(k).getTranslateX();
+          double TowerPosY = towers.get(k).getTranslateY();
+          /** Условие проверки на Cooldown */
+          if (towers.get(k).timeToShoot <= 0) {
             // Проверка на дальность выстрела
             if (Math.pow(Math.pow(EnemyPosX - TowerPosX, 2) + Math.pow(EnemyPosY - TowerPosY, 2),
-                0.5) < Towers.get(k).attackRange) {
-              // Установка Cooldown
-              Towers.get(k).TimeToShoot = Towers.get(k).ShootCooldown;
-              // Создание выстрела
-              Towers.get(k).Shots = new Shot(Spawn[i].enemies.get(j),
-                  Towers.get(k).posX + Main.BLOCK_SIZE / 2, Towers.get(k).posY);
+                0.5) < towers.get(k).attackRange) {
+              /** Установка Cooldown */
+              towers.get(k).timeToShoot = towers.get(k).shootCooldown;
+              /** Создание выстрела */
+              towers.get(k).shots = new Shot(spawn[i].enemies.get(j),
+                  towers.get(k).posX + Main.BLOCK_SIZE / 2, towers.get(k).posY);
             }
           }
         }
