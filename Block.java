@@ -67,13 +67,7 @@ public class Block extends Pane {
                 System.out.println(x + " " + y);
                 Main.server.sendCoordinates(x, y);
             }
-            try {
-              FileWriter out = new FileWriter(Main.gameRoot.savingFile.getAbsoluteFile(), true);
-              out.write(x + " " + y + " " + Main.gameRoot.timeOfTower + "\n");
-              out.close();
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
+            Main.fileWork.AddToFile("positions.txt", x + " " + y + " " + Main.gameRoot.timeOfTower + "\n");
             Tower tower = new Tower(x, y, 150);
             Main.gameRoot.Towers.add(tower);
           });

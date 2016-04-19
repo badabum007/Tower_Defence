@@ -45,10 +45,10 @@ public class GameRoot extends Pane {
 
   /** Хранение аргументов из файла */
   long argumentsFromFile[][];
-  
+
   /** Количество строк в файле */
   int maxCount = 0;
-  
+
   /**
    * Метод подготавливает Root и музыку
    * 
@@ -57,7 +57,7 @@ public class GameRoot extends Pane {
   public GameRoot(String path) {
     this.setVisible(false);
     GameSound = new MusicContainer(path); // Маестро, музыку
-    // GameSound.mediaPlayer.setVolume(0.4);
+    GameSound.mediaPlayer.setVolume(0.4);
     getChildren().add(GameSound.mediaView);
   }
 
@@ -71,34 +71,25 @@ public class GameRoot extends Pane {
     GameSound.mediaPlayer.play();
     Spawn[0] = new Spawner(30, 8 * Main.BLOCK_SIZE + 9, 0);
     Spawn[1] = new Spawner(30, 11 * Main.BLOCK_SIZE + 9, 0);
-    if (GameMode == "Normal") {
-      savingFile = new File("positions.txt");
-      try {
-        FileWriter out = new FileWriter(Main.gameRoot.savingFile.getAbsoluteFile());
-        out.write("");
-        out.close();
-      } catch (IOException e1) {
-        e1.printStackTrace();
-      }
-      try {
-        savingFile.createNewFile();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-    if (GameMode == "Auto")
+    Main.fileWork.CreateTempFile("positions.txt");
+
+    if (GameMode == "Auto") {
       bot = new Bot();
+    }
     // Чтение аргументов из файла и их запись в массив
     if (GameMode == "RePlay") {
       int counter = 0;
       try {
         String[] args = new String[3];
-        BufferedReader reader = new BufferedReader(new FileReader("positions.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader(Main.fileWork.LoadFile));
         String line;
+        maxCount = 0;
         // Считаем количество строк в файле для выделения памяти
-        while ((line = reader.readLine()) != null) maxCount++;
+        while ((line = reader.readLine()) != null){
+          maxCount++;
+        }
         reader.close();
-        reader = new BufferedReader(new FileReader("positions.txt"));
+        reader = new BufferedReader(new FileReader(Main.fileWork.LoadFile));
         argumentsFromFile = new long[maxCount][3];
         while ((line = reader.readLine()) != null) {
           args = line.split(" ");
@@ -106,7 +97,7 @@ public class GameRoot extends Pane {
             argumentsFromFile[counter][i] = Integer.parseInt(args[i]);
           }
           counter++;
-        };
+        } ;
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -126,9 +117,6 @@ public class GameRoot extends Pane {
         EveryTick++;
         // 55 тиков ~= 1 сек
         if (EveryTick > 55) {
-          if (Main.connectionType == "Client") {
-            Main.client.recieve();
-          }
           EveryTick = 0;
           if (Spawn[0].iterator < Spawn[0].count)
             Spawn[0].CreateMonster();
@@ -158,6 +146,12 @@ public class GameRoot extends Pane {
         // Проверка на выстрелы вышек с интервалом 0.1
         if (now / 100000000 != CheckForShootTimer.get()) {
           CheckForShooting();
+          if (Main.connectionType == "Client") {
+            Main.client.recieve();
+          }
+          if (Main.connectionType == "Server") {
+            Main.server.sendEmptyString();
+          }
           // Уменьшение Cooldown-а каждой вышки
           for (int i = 0; i < Towers.size(); i++) {
             Towers.get(i).TimeToShoot -= 0.1;
@@ -165,8 +159,20 @@ public class GameRoot extends Pane {
         }
         // Обновление местоположения монстров с интервалом 0.01 сек
         if (now / 10000000 != FrameTimer.get()) {
-          Spawn[0].update();
-          Spawn[1].update();
+          Thread t1 = new Thread(Spawn[0]);
+          Thread t2 = new Thread(Spawn[1]);
+          t1.start();
+          try {
+            t1.join();
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          t2.start();
+          try {
+            t2.join();
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
         }
         FrameTimer.set(now / 10000000);
         CheckForShootTimer.set(now / 100000000);

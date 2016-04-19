@@ -16,7 +16,7 @@ import javafx.util.Duration;
  * Класс, описывающий место появления монстров
  * @author pixxx
  */
-public class Spawner{
+public class Spawner implements Runnable{
 	/** Кол-во выходящих монстров(в сумме) */
 	int count;
 	
@@ -113,4 +113,9 @@ public class Spawner{
 				}
 			}
 		}
+
+  @Override
+  public void run() {
+    update();
+  }
 }

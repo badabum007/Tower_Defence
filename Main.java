@@ -22,6 +22,7 @@ public class Main extends Application {
   static Menu menu;
   static Pane All = new Pane();
   static Scene scene;
+  static FileWork fileWork;
 
   static Server server;
   static Client client;
@@ -42,6 +43,7 @@ public class Main extends Application {
     if (connectionType == "Client") {
       client = new Client();
     }
+    fileWork = new FileWork();
     menu = new Menu("menu.mp3");
     gameRoot = new GameRoot("wave1.mp3");
     scene = new Scene(All, RESOLUTION_X, RESOLUTION_Y);
