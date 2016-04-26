@@ -36,7 +36,7 @@ public class Block extends Pane {
    * @param x - Координата X
    * @param y - Координата Y
    */
-  public Block(BlockType type, int x, int y) {
+  public Block(BlockType type, int x, int y, boolean isStats) {
     block = new ImageView();
     block.setFitHeight(Main.BLOCK_SIZE);
     block.setFitWidth(Main.BLOCK_SIZE);
@@ -80,6 +80,10 @@ public class Block extends Pane {
     }
     /** Добавление блока на Root */
     getChildren().add(block);
-    Main.gameRoot.getChildren().add(this);
+    if (isStats) {
+      Main.menu.getChildren().add(this);
+    } else {
+      Main.gameRoot.getChildren().add(this);
+    }
   }
 }

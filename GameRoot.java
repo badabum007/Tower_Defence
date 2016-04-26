@@ -13,7 +13,13 @@ import javafx.animation.FadeTransition;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 /**
@@ -68,7 +74,7 @@ public class GameRoot extends Pane {
   public void startGame() {
     timeOfTower = 0;
     towers = new ArrayList<Tower>();
-    createMap();
+    createMap(false);
     gameSound.mediaPlayer.play();
     spawn[0] = new Spawner(30, 8 * Main.BLOCK_SIZE + 9, 0);
     spawn[1] = new Spawner(30, 11 * Main.BLOCK_SIZE + 9, 0);
@@ -215,25 +221,60 @@ public class GameRoot extends Pane {
    * 
    * @see LevelData
    */
-  public void createMap() {
+  public void createMap(boolean isStats) {
     for (int i = 0; i < LevelData.levels[0].length; i++) {
       String line = LevelData.levels[0][i];
       for (int j = 0; j < line.length(); j++) {
         switch (line.charAt(j)) {
           case 'T':
-            Block tree = new Block(Block.BlockType.Tree, j * Main.BLOCK_SIZE, i * Main.BLOCK_SIZE);
+            Block tree =
+                new Block(Block.BlockType.Tree, j * Main.BLOCK_SIZE, i * Main.BLOCK_SIZE, isStats);
             break;
           case '0':
             Block grass =
-                new Block(Block.BlockType.Grass, j * Main.BLOCK_SIZE, i * Main.BLOCK_SIZE);
+                new Block(Block.BlockType.Grass, j * Main.BLOCK_SIZE, i * Main.BLOCK_SIZE, isStats);
             break;
           default:
-            Block road = new Block(Block.BlockType.Road, j * Main.BLOCK_SIZE, i * Main.BLOCK_SIZE);
+            Block road =
+                new Block(Block.BlockType.Road, j * Main.BLOCK_SIZE, i * Main.BLOCK_SIZE, isStats);
             break;
         }
       }
     }
   }
+
+  /**
+   * Метод, создающий карту с игровой статистикой
+   */
+  /*public void createStatisticMap() {
+    File[] saveFiles = FileWork.getSaveList();
+    String line = LevelData.levels[0][0];
+    int[][] statisticNumbers = new int[LevelData.levels[0].length][line.length()];
+    int coordX, coordY, max = 0, greenColor = 0, sum = 0;
+    for (int i = 0; i < saveFiles.length; i++) {
+      try {
+        String[] args = new String[3];
+        BufferedReader reader = new BufferedReader(new FileReader(saveFiles[i]));
+        while ((line = reader.readLine()) != null) {
+          args = line.split(" ");
+          coordY = Integer.parseInt(args[0]) / Main.BLOCK_SIZE;
+          coordX = Integer.parseInt(args[1]) / Main.BLOCK_SIZE;
+          statisticNumbers[coordX][coordY]++;
+          sum++;
+          if (statisticNumbers[coordX][coordY] > max) {
+            max = statisticNumbers[coordX][coordY];
+          }
+        } ;
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    createMap(true);
+    if (max != 0) {
+      greenColor = (int) (255 / max);
+    }
+  
+  }*/
 
   /** Метод, реализующий поиск целей и генерации выстрела */
   public void checkForShooting() {
@@ -251,7 +292,7 @@ public class GameRoot extends Pane {
           double TowerPosY = towers.get(k).getTranslateY();
           /** Условие проверки на Cooldown */
           if (towers.get(k).timeToShoot <= 0) {
-            // Проверка на дальность выстрела
+            /** Проверка на дальность выстрела */
             if (Math.pow(Math.pow(EnemyPosX - TowerPosX, 2) + Math.pow(EnemyPosY - TowerPosY, 2),
                 0.5) < towers.get(k).attackRange) {
               /** Установка Cooldown */

@@ -25,6 +25,5 @@ public class LevelData {
 		};
 	
 	public static String[][] levels = new String[][]{
-		Level1
-	};
+      Level1};
 }

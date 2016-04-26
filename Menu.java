@@ -48,14 +48,16 @@ class Menu extends StackPane {
     MenuItem buttonAuto = new MenuItem("Auto Game");
     MenuItem buttonSaveGame = new MenuItem("Save");
     MenuItem buttonLoadGame = new MenuItem("Load");
+    MenuItem buttonStatistic = new MenuItem("Statistic");
     MenuItem buttonLoad = new MenuItem("Load");
+    MenuItem generateSaves = new MenuItem("Generate Saves");
     MenuItem buttonJavaSort = new MenuItem("JavaSort");
     MenuItem buttonScalaSort = new MenuItem("ScalaSort");
     MenuItem buttonBack = new MenuItem("Back");
     buttonSaveGame.setDisable(true);
     MenuItem buttonQuit = new MenuItem("Quit");
     menuBox = new MenuBox("TowerDefence", buttonStart, buttonAuto, buttonLoadGame, buttonSaveGame,
-        buttonQuit);
+        buttonStatistic, buttonQuit);
     getChildren().add(menuBox);
     /** Обработчик кнопки "New Game" */
     buttonStart.setOnMouseClicked(event -> {
@@ -93,7 +95,7 @@ class Menu extends StackPane {
       vbox.setAlignment(Pos.CENTER);
       vbox.getChildren().addAll(text);
       vbox.getChildren().addAll(listView);
-      vbox.getChildren().addAll(buttonLoad, buttonJavaSort, buttonScalaSort, buttonBack);
+      vbox.getChildren().addAll(buttonLoad, buttonJavaSort, buttonScalaSort, generateSaves, buttonBack);
       setAlignment(Pos.CENTER);
       getChildren().addAll(vbox);
     });
@@ -102,6 +104,14 @@ class Menu extends StackPane {
       vbox.getChildren().clear();
       getChildren().remove(vbox);
     });
+    /** Обработчик "Generate Saves" в подменю "Load"*/
+    generateSaves.setOnMouseClicked(event ->{
+      try {
+        Main.fileWork.generateRandomFiles();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
     /** Обработчик "Load" в подменю "Load" */
     buttonLoad.setOnMouseClicked(event -> {
       String choise;
@@ -109,6 +119,7 @@ class Menu extends StackPane {
       if (choise != null) {
         buttonSaveGame.setDisable(true);
         Main.gameRoot.gameMode = "RePlay";
+        menuBox.changeText("Pause (Press ESC to continue)");
         vbox.getChildren().clear();
         getChildren().remove(vbox);
         Main.fileWork.loadFile = choise;
@@ -126,7 +137,7 @@ class Menu extends StackPane {
       long timeJava = System.currentTimeMillis();
       listView.getItems().clear();
       File[] sortedFiles = Main.fileWork.getSortedJavaList();
-      for (int i = 0; i < 10000; i++) {
+      for (int i = 0; i < 10; i++) {
         sortedFiles = Main.fileWork.getSortedJavaList();
       }
       for (int i = 0; i < sortedFiles.length; i++) {
@@ -140,7 +151,7 @@ class Menu extends StackPane {
       long timeScala = System.currentTimeMillis();
       listView.getItems().clear();
       File[] sortedFiles = Main.fileWork.getSortedScalaList();
-      for (int i = 0; i < 10000; i++) {
+      for (int i = 0; i < 10; i++) {
         sortedFiles = Main.fileWork.getSortedScalaList();
       }
       for (int i = 0; i < sortedFiles.length; i++) {
@@ -156,6 +167,11 @@ class Menu extends StackPane {
       } catch (Exception e) {
         e.printStackTrace();
       }
+    });
+    /** Обработчик кнопки Statistic */
+    buttonStatistic.setOnMouseClicked(event->{
+      Statistic stats = new Statistic();
+      stats.showStatistic();
     });
     /** Обработчик кнопки "Quit" */
     buttonQuit.setOnMouseClicked(event -> {

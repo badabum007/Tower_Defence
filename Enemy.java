@@ -96,7 +96,7 @@ public class Enemy extends Pane {
   public void enemyGoalRiched() {
     health = 0;
     this.setVisible(false);
-    Main.gameRoot.getChildren().remove(this);
+    getChildren().remove(this);
     this.animation.stop();
   }
 
