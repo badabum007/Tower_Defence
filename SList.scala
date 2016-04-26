@@ -16,7 +16,7 @@ class SList {
     JavaConversions.mutableSeqAsJavaList(tempList)
   }
 
-  def getElem(indexX: Int, indexY: Int, size: Int): Option[Int] = {
+  def getElem(indexX: Int, indexY: Int, size: Int){
     val temp: Int = indexX * size + indexY
     val k: Option[Int] = tempList.get(temp)
   }

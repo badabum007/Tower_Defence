@@ -32,6 +32,9 @@ public class Statistic {
 
   /** Общее кол-во башен */
   int sum;
+  
+  /** Для округления */
+  final static int ROUND = 100;
 
   /** Scala Class содержащий статистику */
   SList listScala;
@@ -78,8 +81,6 @@ public class Statistic {
         listScala.addEl(statisticNumbers[i][j]);
       }
     }
-    System.out.println("statisticNumbers[7][4]");
-    // System.out.println(listScala.getElem(7, 4, statisticNumbers[0].length));
     Main.gameRoot.createMap(true);
     if (max != 0) {
       int maxRGB = 255;
@@ -91,7 +92,6 @@ public class Statistic {
    * Метод реализует вывод статистики на экран
    */
   public void showStatistic() {
-    final int ROUND = 100;
     VBox vbox = new VBox();
     double temp;
     String line;
@@ -101,7 +101,7 @@ public class Statistic {
       HBox hbox = new HBox();
       for (int j = 0; j < statisticNumbers[i].length; j++) {
         line = LevelData.levels[0][i];
-        temp = (double) arrlist.get(i * statisticNumbers[i].length + j) / sum * ROUND;
+        temp = (double) statisticNumbers[i][j] / sum * ROUND;
         temp *= ROUND;
         int tempValue = (int) temp;
         temp = (double) tempValue / ROUND;

@@ -23,6 +23,9 @@ public class FileWork {
   /** Временный файл для сохранения */
   String loadFile;
 
+  /** Количество генерируемых файлов */
+  static final int COUNT_OF_FILES = 1000;
+
   /**
    * Создает файл с заданным именем в директории
    * 
@@ -196,10 +199,12 @@ public class FileWork {
    */
   void quickSort(int arr[], File files[], int left, int right) {
     int index = partition(arr, files, left, right);
-    if (left < index - 1)
+    if (left < index - 1) {
       quickSort(arr, files, left, index - 1);
-    if (index < right)
+    }
+    if (index < right) {
       quickSort(arr, files, index, right);
+    }
   }
 
   /**
@@ -211,7 +216,7 @@ public class FileWork {
     Random rnd = new Random();
     int x, y;
     long time, i, n;
-    for (int j = 0; j < 1000; j++) {
+    for (int j = 0; j < COUNT_OF_FILES; j++) {
       time = 55;
       n = rnd.nextInt(20);
       String nameOfFile =
@@ -228,8 +233,9 @@ public class FileWork {
         if (line.charAt(x) == '0') {
           out.write(x * Main.BLOCK_SIZE + " " + y * Main.BLOCK_SIZE + " " + time + "\n");
           time += 50;
-        } else
+        } else {
           i--;
+        }
       }
       out.close();
     }

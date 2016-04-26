@@ -243,39 +243,6 @@ public class GameRoot extends Pane {
     }
   }
 
-  /**
-   * Метод, создающий карту с игровой статистикой
-   */
-  /*public void createStatisticMap() {
-    File[] saveFiles = FileWork.getSaveList();
-    String line = LevelData.levels[0][0];
-    int[][] statisticNumbers = new int[LevelData.levels[0].length][line.length()];
-    int coordX, coordY, max = 0, greenColor = 0, sum = 0;
-    for (int i = 0; i < saveFiles.length; i++) {
-      try {
-        String[] args = new String[3];
-        BufferedReader reader = new BufferedReader(new FileReader(saveFiles[i]));
-        while ((line = reader.readLine()) != null) {
-          args = line.split(" ");
-          coordY = Integer.parseInt(args[0]) / Main.BLOCK_SIZE;
-          coordX = Integer.parseInt(args[1]) / Main.BLOCK_SIZE;
-          statisticNumbers[coordX][coordY]++;
-          sum++;
-          if (statisticNumbers[coordX][coordY] > max) {
-            max = statisticNumbers[coordX][coordY];
-          }
-        } ;
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    createMap(true);
-    if (max != 0) {
-      greenColor = (int) (255 / max);
-    }
-  
-  }*/
-
   /** Метод, реализующий поиск целей и генерации выстрела */
   public void checkForShooting() {
     int spawnersCount = 2;
