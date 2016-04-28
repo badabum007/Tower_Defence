@@ -36,7 +36,7 @@ public class Block extends Pane {
    * @param x - Координата X
    * @param y - Координата Y
    */
-  public Block(BlockType type, int x, int y) {
+  public Block(BlockType type, int x, int y, boolean isStats) {
     block = new ImageView();
     block.setFitHeight(Main.BLOCK_SIZE);
     block.setFitWidth(Main.BLOCK_SIZE);
@@ -61,21 +61,16 @@ public class Block extends Pane {
           Main.gameRoot.getChildren().removeAll(line1, line2, line3, line4);
         });
         /** Ставить Tower по клику на блок */
-        if (Main.gameRoot.GameMode == "Normal") {
+        if (Main.gameRoot.gameMode == "Normal") {
           this.setOnMouseClicked(event -> {
-            if (Main.connectionType == "Server"){
-                System.out.println(x + " " + y);
-                Main.server.sendCoordinates(x, y);
+            if (Main.connectionType == "Server") {
+              System.out.println(x + " " + y);
+              Main.server.sendCoordinates(x, y);
             }
-            try {
-              FileWriter out = new FileWriter(Main.gameRoot.savingFile.getAbsoluteFile(), true);
-              out.write(x + " " + y + " " + Main.gameRoot.timeOfTower + "\n");
-              out.close();
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
+            Main.fileWork.addToFile("positions.txt",
+                x + " " + y + " " + Main.gameRoot.timeOfTower + "\n");
             Tower tower = new Tower(x, y, 150);
-            Main.gameRoot.Towers.add(tower);
+            Main.gameRoot.towers.add(tower);
           });
         }
         break;
@@ -85,6 +80,10 @@ public class Block extends Pane {
     }
     /** Добавление блока на Root */
     getChildren().add(block);
-    Main.gameRoot.getChildren().add(this);
+    if (isStats) {
+      Main.menu.getChildren().add(this);
+    } else {
+      Main.gameRoot.getChildren().add(this);
+    }
   }
 }

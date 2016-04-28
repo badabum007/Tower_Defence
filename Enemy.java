@@ -19,9 +19,9 @@ public class Enemy extends Pane {
   public double posY;
 
   /** Предыдущий блок, на котором был монстр (необходимо для правильного передвижения) */
-  char PrevBlock = 'N';
+  char prevBlock = 'N';
 
-  int Health = 100;
+  int health = 100;
   int width = 32;
   int height = 32;
   int offsetX = 0;
@@ -93,10 +93,10 @@ public class Enemy extends Pane {
   /**
    * Метод, убирающий цель с карты, если она дошла до конца
    */
-  public void EnemyGoalRiched() {
-    Health = 0;
+  public void enemyGoalRiched() {
+    health = 0;
     this.setVisible(false);
-    Main.gameRoot.getChildren().remove(this);
+    getChildren().remove(this);
     this.animation.stop();
   }
 
@@ -105,9 +105,9 @@ public class Enemy extends Pane {
    * 
    * @param Damage - Кол-во полученного урона
    */
-  public void GetDamage(int Damage) {
-    Health = Health - Damage;
-    if (Health <= 0) {
+  public void getDamage(int Damage) {
+    health = health - Damage;
+    if (health <= 0) {
       this.setVisible(false);
       Main.gameRoot.getChildren().remove(this);
       this.animation.stop();

@@ -17,14 +17,14 @@ import javafx.scene.shape.Circle;
  * @author pixxx
  */
 public class Tower extends Pane {
-  int Damage;
+  int damage;
   ImageView imageView;
 
   /** Cooldown на выстрел вышки */
-  double ShootCooldown;
+  double shootCooldown;
 
   /** Сколько времени осталось до выстрела */
-  double TimeToShoot = 0;
+  double timeToShoot = 0;
 
   /** Позиция вышки, радиус атаки, ее размеры и производимый выстрел */
   double posX;
@@ -32,7 +32,7 @@ public class Tower extends Pane {
   double attackRange;
   int height;
   int width;
-  Shot Shots;
+  Shot shots;
 
   /**
    * Метод, создающий объект вышки с заданными параметрами
@@ -44,7 +44,7 @@ public class Tower extends Pane {
   public Tower(double posX, double posY, double attackRange) {
     width = Main.BLOCK_SIZE;
     height = Main.BLOCK_SIZE;
-    ShootCooldown = 0.5;
+    shootCooldown = 0.5;
     this.attackRange = attackRange;
     this.posX = posX;
     this.posY = posY;
@@ -55,19 +55,19 @@ public class Tower extends Pane {
     this.setTranslateY(posY);
     getChildren().add(imageView);
     Main.gameRoot.getChildren().add(this);
-    // Создание кольца, отображающего радиус атаки
-    Circle AttackRangeCircle =
+    /** Создание кольца, отображающего радиус атаки */
+    Circle attackRangeCircle =
         new Circle(posX + Main.BLOCK_SIZE / 2, posY + Main.BLOCK_SIZE / 2, attackRange);
-    AttackRangeCircle.setOpacity(0.1);
-    Main.gameRoot.getChildren().add(AttackRangeCircle);
-    AttackRangeCircle.setVisible(false);
-    // Отображение кольца радиуса атаки при наведении на вышку
+    attackRangeCircle.setOpacity(0.1);
+    Main.gameRoot.getChildren().add(attackRangeCircle);
+    attackRangeCircle.setVisible(false);
+    /** Отображение кольца радиуса атаки при наведении на вышку */
     this.setOnMouseEntered(event -> {
-      AttackRangeCircle.setVisible(true);
+      attackRangeCircle.setVisible(true);
     });
     this.setOnMouseExited(event -> {
-      AttackRangeCircle.setMouseTransparent(true);
-      AttackRangeCircle.setVisible(false);
+      attackRangeCircle.setMouseTransparent(true);
+      attackRangeCircle.setVisible(false);
     });
   }
 }

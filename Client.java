@@ -37,22 +37,22 @@ public class Client {
    * Метод принимает данные с сервера
    */
   void recieve() {
-    String Body = null;
-    String ArrayBody[] = new String[3];
+    String body = null;
+    String[] arrayBody = new String[3];
     int x = -1, y = -1;
     try {
-      Body = in.readLine();
-      if (Body.isEmpty())
+      body = in.readLine();
+      if (body.isEmpty())
         return;
-      System.out.println(Body);
+      System.out.println(body);
     } catch (IOException e) {
       e.printStackTrace();
     }
-    if (!Body.isEmpty()) {
-      ArrayBody = Body.split(" ");
-      x = Integer.parseInt(ArrayBody[0]);
-      y = Integer.parseInt(ArrayBody[1]);
-      Main.gameRoot.Towers.add(new Tower(x, y, 150));
+    if (!body.isEmpty()) {
+      arrayBody = body.split(" ");
+      x = Integer.parseInt(arrayBody[0]);
+      y = Integer.parseInt(arrayBody[1]);
+      Main.gameRoot.towers.add(new Tower(x, y, 150));
     }
   }
 }
