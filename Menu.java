@@ -7,8 +7,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -23,8 +27,13 @@ class Menu extends StackPane {
   /** Музыка в меню */
   MusicContainer menuSound;
 
+  /** MagicButton */
+  MagicButton magicButton;
+
   /** Список файлов для загрузки */
   ListView<String> listView;
+
+  MenuBox menuBox;
 
   /**
    * Метод добавляющий музыку в меню
@@ -41,7 +50,6 @@ class Menu extends StackPane {
    */
   public void showMenu() {
     menuSound.mediaPlayer.play();
-    MenuBox menuBox;
     /** Создание пунктов меню и их добавление в Root */
     VBox vbox = new VBox(10);
     MenuItem buttonStart = new MenuItem("New Game");
@@ -49,6 +57,7 @@ class Menu extends StackPane {
     MenuItem buttonSaveGame = new MenuItem("Save");
     MenuItem buttonLoadGame = new MenuItem("Load");
     MenuItem buttonStatistic = new MenuItem("Statistic");
+    MenuItem buttonGetMagic = new MenuItem("Magic Button");
     MenuItem buttonLoad = new MenuItem("Load");
     MenuItem generateSaves = new MenuItem("Generate Saves");
     MenuItem buttonJavaSort = new MenuItem("JavaSort");
@@ -57,7 +66,7 @@ class Menu extends StackPane {
     buttonSaveGame.setDisable(true);
     MenuItem buttonQuit = new MenuItem("Quit");
     menuBox = new MenuBox("TowerDefence", buttonStart, buttonAuto, buttonLoadGame, buttonSaveGame,
-        buttonStatistic, buttonQuit);
+        buttonStatistic, buttonGetMagic, buttonQuit);
     getChildren().add(menuBox);
     /** Обработчик кнопки "New Game" */
     buttonStart.setOnMouseClicked(event -> {
@@ -95,7 +104,8 @@ class Menu extends StackPane {
       vbox.setAlignment(Pos.CENTER);
       vbox.getChildren().addAll(text);
       vbox.getChildren().addAll(listView);
-      vbox.getChildren().addAll(buttonLoad, buttonJavaSort, buttonScalaSort, generateSaves, buttonBack);
+      vbox.getChildren().addAll(buttonLoad, buttonJavaSort, buttonScalaSort, generateSaves,
+          buttonBack);
       setAlignment(Pos.CENTER);
       getChildren().addAll(vbox);
     });
@@ -104,8 +114,8 @@ class Menu extends StackPane {
       vbox.getChildren().clear();
       getChildren().remove(vbox);
     });
-    /** Обработчик "Generate Saves" в подменю "Load"*/
-    generateSaves.setOnMouseClicked(event ->{
+    /** Обработчик "Generate Saves" в подменю "Load" */
+    generateSaves.setOnMouseClicked(event -> {
       try {
         Main.fileWork.generateRandomFiles();
       } catch (Exception e) {
@@ -126,8 +136,9 @@ class Menu extends StackPane {
         menuSound.mediaPlayer.pause();
         Main.gameRoot.gameSound.mediaPlayer.stop();
         setVisible(false);
-        if (Main.gameRoot.gameMode != "Auto")
+        if (Main.gameRoot.gameMode != "Auto") {
           Main.gameRoot.gameMode = "RePlay";
+        }
         Main.gameRoot.setVisible(true);
         Main.gameRoot.startGame();
       }
@@ -169,9 +180,15 @@ class Menu extends StackPane {
       }
     });
     /** Обработчик кнопки Statistic */
-    buttonStatistic.setOnMouseClicked(event->{
+    buttonStatistic.setOnMouseClicked(event -> {
       Statistic stats = new Statistic();
       stats.showStatistic();
+    });
+    /** Обработчик кнопки Magic Button */
+    buttonGetMagic.setOnMouseClicked(event -> {
+      magicButton = new MagicButton("Untitled.mp4");
+      menuSound.mediaPlayer.pause();
+      Main.menu.getChildren().add(magicButton.root);
     });
     /** Обработчик кнопки "Quit" */
     buttonQuit.setOnMouseClicked(event -> {
