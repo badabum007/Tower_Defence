@@ -68,9 +68,6 @@ public class Statistic {
           coordX = Integer.parseInt(args[1]) / Main.BLOCK_SIZE;
           statisticNumbers[coordX][coordY]++;
           sum++;
-          if (statisticNumbers[coordX][coordY] > max) {
-            max = statisticNumbers[coordX][coordY];
-          }
         } ;
       } catch (IOException e) {
         e.printStackTrace();
@@ -82,6 +79,7 @@ public class Statistic {
       }
     }
     Main.gameRoot.createMap(true);
+    max = listScala.getMax();
     if (max != 0) {
       int maxRGB = 255;
       greenColor = (int) (maxRGB / max);
@@ -101,7 +99,8 @@ public class Statistic {
       HBox hbox = new HBox();
       for (int j = 0; j < statisticNumbers[i].length; j++) {
         line = LevelData.levels[0][i];
-        temp = (double) statisticNumbers[i][j] / sum * ROUND;
+        int stats = (int)arrlist.get(i*statisticNumbers[0].length + j);
+        temp = (double) stats / sum * ROUND;
         temp *= ROUND;
         int tempValue = (int) temp;
         temp = (double) tempValue / ROUND;

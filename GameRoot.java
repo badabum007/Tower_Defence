@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
@@ -39,6 +40,9 @@ public class GameRoot extends Pane {
 
   /** –ежим игры: автоматический(Auto) или обычный(Normal) */
   static String gameMode;
+
+  /** Ќотации */
+  Notation notation;
 
   /** Ѕот дл€ автоматического режима */
   Bot bot;
@@ -134,6 +138,10 @@ public class GameRoot extends Pane {
         if (gameMode == "RePlay") {
           if (counter < maxCount) {
             if (timeOfTower > argumentsFromFile[counter][2]) {
+              List<Integer> list = new ArrayList<>();
+              list.add((int) argumentsFromFile[counter][0]);
+              list.add((int) argumentsFromFile[counter][1]);
+              System.out.println(Notation.parseNotation(list));
               Tower tower =
                   new Tower(argumentsFromFile[counter][0], argumentsFromFile[counter][1], 150);
               Main.gameRoot.towers.add(tower);
@@ -186,7 +194,7 @@ public class GameRoot extends Pane {
       }
     };
     timer.start();
-    // ќписание анимации плавного по€влени€ и исчезновени€ главного меню
+    /** ќписание анимации плавного по€влени€ и исчезновени€ главного меню */
     FadeTransition ftMenu = new FadeTransition(Duration.seconds(1), Main.menu);
     ftMenu.setFromValue(0);
     ftMenu.setToValue(1);
